@@ -2,6 +2,7 @@ import { Column, Entity, OneToMany } from 'typeorm';
 
 import { ArticleEntity } from './article.entity';
 import { CommentEntity } from './comment.entity';
+import { RoleEnum } from './enums/role.enum';
 import { TableNameEnum } from './enums/table-name.enum';
 import { FollowEntity } from './follow.entity';
 import { LikeEntity } from './like.entity';
@@ -24,6 +25,9 @@ export class UserEntity extends CreateUpdateModel {
 
   @Column('text', { nullable: true })
   image?: string;
+
+  @Column('enum', { default: RoleEnum.CLIENT })
+  role: RoleEnum;
 
   @OneToMany(() => LikeEntity, (entity) => entity.user)
   likes?: LikeEntity[];
