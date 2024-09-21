@@ -26,7 +26,7 @@ export class UserEntity extends CreateUpdateModel {
   @Column('text', { nullable: true })
   image?: string;
 
-  @Column('enum', { default: RoleEnum.CLIENT })
+  @Column('enum', { enum: RoleEnum, default: RoleEnum.CLIENT })
   role: RoleEnum;
 
   @OneToMany(() => LikeEntity, (entity) => entity.user)

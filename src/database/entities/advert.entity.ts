@@ -15,7 +15,7 @@ export class AdvertEntity extends CreateUpdateModel {
   @Column()
   model_id: string;
   @ManyToOne(() => ModelEntity, (entity) => entity.articles)
-  @JoinColumn({ name: 'user_id' })
+  @JoinColumn({ name: 'model_id' })
   model?: UserEntity;
 
   @Column()
