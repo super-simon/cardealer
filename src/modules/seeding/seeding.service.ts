@@ -21,7 +21,7 @@ export class SeedingService {
         where: { role: RoleEnum.ADMIN },
       });
       if (adminsCount === 0) {
-        const password = await bcrypt.hash('ThePassword', 10);
+        const password = await bcrypt.hash('123qwe!@#QWE', 10);
         const admin = userRepository.create({
           name: 'Super Admin',
           email: 'admin@admin.admin',

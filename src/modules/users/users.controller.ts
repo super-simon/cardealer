@@ -11,6 +11,7 @@ import {
   Post,
   Put,
   UploadedFile,
+  UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
@@ -27,7 +28,9 @@ import {
 import { ApiFile } from 'src/common/decorators/api-file.decorator';
 import { RoleEnum } from 'src/database/entities/enums/role.enum';
 import { CurrentUser } from '../auth/decorators/current-user.decorator';
+import { Roles } from '../auth/decorators/roles.decorator';
 import { SkipAuth } from '../auth/decorators/skip-auth.decorator';
+import { RolesGuard } from '../auth/guards/roles.guard';
 import { IUserData } from '../auth/interfaces/user-data.interface';
 import { CreateUserDto } from './dto/req/create-user.dto';
 import { UpdateUserDto } from './dto/req/update-user.dto';
@@ -126,6 +129,8 @@ export class UsersController {
   }
 
   @ApiBearerAuth()
+  @UseGuards(RolesGuard)
+  @Roles([RoleEnum.ADMIN, RoleEnum.MANAGER])
   @Post('create')
   public async create(
     @CurrentUser() userData: IUserData,

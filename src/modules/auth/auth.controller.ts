@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Get,
   HttpCode,
   HttpStatus,
   Post,
@@ -21,6 +22,12 @@ import { AuthService } from './services/auth.service';
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
+
+  @SkipAuth()
+  @Get('test')
+  public async test(): Promise<string> {
+    return 'Hello!';
+  }
 
   @SkipAuth()
   @Post('sign-up')
