@@ -1,3 +1,5 @@
+import { RoleEnum } from 'src/database/entities/enums/role.enum';
+
 export class BaseUserResDto {
   id: string;
 
@@ -8,6 +10,8 @@ export class BaseUserResDto {
   bio?: string;
 
   image?: string;
+
+  role: RoleEnum;
 
   createdAt: Date;
 

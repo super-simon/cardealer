@@ -14,6 +14,7 @@ export class UserMapper {
       email: data.email,
       image: data.image ? `${awsConfig.bucketURL}/${data.image}` : null,
       bio: data.bio,
+      role: data.role,
       isFollowed: data.followings?.length > 0 || false,
     };
   }
@@ -23,6 +24,7 @@ export class UserMapper {
       userId: payload.userId,
       deviceId: payload.deviceId,
       email: user.email,
+      role: user.role,
     };
   }
 }

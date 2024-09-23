@@ -4,12 +4,15 @@ import { BrandEntity } from 'src/database/entities/brand.entity';
 import { RoleEnum } from 'src/database/entities/enums/role.enum';
 import { ModelEntity } from 'src/database/entities/model.entity';
 import { UserEntity } from 'src/database/entities/user.entity';
-import { EntityManager } from 'typeorm';
+import { DataSource, EntityManager } from 'typeorm';
 import { brandsAndModels } from './data/brand-and-models';
 
 @Injectable()
 export class SeedingService {
-  constructor(private readonly entityManager: EntityManager) {}
+  constructor(
+    private readonly entityManager: EntityManager,
+    private readonly dataSource: DataSource,
+  ) {}
 
   async createMainAdminIfThereAreNone(): Promise<boolean> {
     return this.entityManager.transaction(async (em) => {

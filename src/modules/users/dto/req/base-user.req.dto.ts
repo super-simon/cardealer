@@ -1,7 +1,8 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Transform, Type } from 'class-transformer';
-import { IsOptional, IsString, Length, Matches } from 'class-validator';
+import { IsEnum, IsOptional, IsString, Length, Matches } from 'class-validator';
 
+import { RoleEnum } from 'src/database/entities/enums/role.enum';
 import { TransformHelper } from '../../../../common/helpers/transform.helper';
 
 export class BaseUserReqDto {
@@ -33,4 +34,9 @@ export class BaseUserReqDto {
   @Length(0, 300)
   @Matches(/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%_*#?&])[A-Za-z\d@$_!%*#?&]{8,}$/)
   password: string;
+
+  @ApiProperty({ example: 'CLIENT' })
+  @IsString()
+  @IsEnum(RoleEnum)
+  role: RoleEnum;
 }

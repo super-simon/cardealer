@@ -23,11 +23,7 @@ export class AuthService {
   ) {}
 
   public async signUp(dto: SignUpReqDto): Promise<AuthResDto> {
-    await this.usersService.isEmailExistOrThrow(dto.email);
-    const password = await bcrypt.hash(dto.password, 10);
-    const user = await this.userRepository.save(
-      this.userRepository.create({ ...dto, password }),
-    );
+    const user = await this.usersService.createUser(dto);
     const tokens = await this.tokenService.generateAuthTokens({
       userId: user.id,
       deviceId: dto.deviceId,

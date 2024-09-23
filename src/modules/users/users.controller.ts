@@ -2,6 +2,7 @@ import {
   Body,
   Controller,
   Delete,
+  ForbiddenException,
   Get,
   HttpCode,
   HttpStatus,
@@ -24,9 +25,11 @@ import {
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
 import { ApiFile } from 'src/common/decorators/api-file.decorator';
+import { RoleEnum } from 'src/database/entities/enums/role.enum';
 import { CurrentUser } from '../auth/decorators/current-user.decorator';
 import { SkipAuth } from '../auth/decorators/skip-auth.decorator';
 import { IUserData } from '../auth/interfaces/user-data.interface';
+import { CreateUserDto } from './dto/req/create-user.dto';
 import { UpdateUserDto } from './dto/req/update-user.dto';
 import { UserResDto } from './dto/res/user.res.dto';
 import { UserMapper } from './user.mapper';
@@ -120,5 +123,21 @@ export class UsersController {
     @CurrentUser() userData: IUserData,
   ): Promise<void> {
     await this.usersService.unfollow(userData, userId);
+  }
+
+  @ApiBearerAuth()
+  @Post('create')
+  public async create(
+    @CurrentUser() userData: IUserData,
+    @Body() createUserDto: CreateUserDto,
+  ): Promise<void> {
+    if (
+      userData.role === RoleEnum.MANAGER &&
+      (createUserDto.role === RoleEnum.ADMIN ||
+        createUserDto.role === RoleEnum.MANAGER)
+    ) {
+      throw new ForbiddenException("You can't create a user with such role");
+    }
+    await this.usersService.createUser(createUserDto);
   }
 }

@@ -3,6 +3,7 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
+import * as bcrypt from 'bcrypt';
 import { UserEntity } from 'src/database/entities/user.entity';
 import { IUserData } from '../auth/interfaces/user-data.interface';
 import { AuthCacheService } from '../auth/services/auth-cache.service';
@@ -11,6 +12,7 @@ import { FileStorageService } from '../file-storage/services/file-storage.servic
 import { LoggerService } from '../logger/logger.service';
 import { FollowRepository } from '../repository/services/follow.repository';
 import { UserRepository } from '../repository/services/user.repository';
+import { CreateUserDto } from './dto/req/create-user.dto';
 import { UpdateUserDto } from './dto/req/update-user.dto';
 
 @Injectable()
@@ -126,5 +128,13 @@ export class UsersService {
     const user = await this.userRepository.findOneBy({ id: userData.userId });
     await this.fileStorageService.deleteFile(user.image);
     await this.userRepository.update(userData.userId, { image: null });
+  }
+
+  public async createUser(dto: CreateUserDto): Promise<UserEntity> {
+    await this.isEmailExistOrThrow(dto.email);
+    const password = await bcrypt.hash(dto.password, 10);
+    return await this.userRepository.save(
+      this.userRepository.create({ ...dto, password }),
+    );
   }
 }
