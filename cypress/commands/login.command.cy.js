@@ -35,7 +35,6 @@ Cypress.Commands.add('signUp', (name, email, password, role, code) => {
   })
     .as('signUpResponse')
     .then((signUpResponse) => {
-      console.log(signUpResponse);
       if (signUpResponse.body.tokens) {
         Cypress.env('accessToken', signUpResponse.body.tokens.accessToken);
       }

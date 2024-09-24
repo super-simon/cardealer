@@ -1,13 +1,21 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Patch,
+  Post,
+} from '@nestjs/common';
 import { AdvertService } from './advert.service';
-import { CreateAdvertDto } from './dto/create-advert.dto';
-import { UpdateAdvertDto } from './dto/update-advert.dto';
+import { CreateAdvertDto } from './dto/req/create-advert.req.dto';
+import { UpdateAdvertDto } from './dto/req/update-advert.reqdto';
 
 @Controller('advert')
 export class AdvertController {
   constructor(private readonly advertService: AdvertService) {}
 
-  @Post()
+  @Post('request')
   create(@Body() createAdvertDto: CreateAdvertDto) {
     return this.advertService.create(createAdvertDto);
   }

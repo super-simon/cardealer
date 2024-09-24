@@ -9,7 +9,6 @@ import { LikeRepository } from 'src/modules/repository/services/like.repository'
 import { EntityManager, In } from 'typeorm';
 import { IUserData } from '../../auth/interfaces/user-data.interface';
 import { ArticleRepository } from '../../repository/services/article.repository';
-import { TagRepository } from '../../repository/services/tag.repository';
 import { ArticleListQueryDto } from '../dto/req/article-list.query.dto';
 import { CreateArticleDto } from '../dto/req/create-article.req.dto';
 import { UpdateArticleDto } from '../dto/req/update-article.req.dto';
@@ -17,7 +16,6 @@ import { UpdateArticleDto } from '../dto/req/update-article.req.dto';
 @Injectable()
 export class ArticleService {
   constructor(
-    private readonly tagRepository: TagRepository,
     private readonly articleRepository: ArticleRepository,
     private readonly likeRepository: LikeRepository,
     private readonly entityManager: EntityManager,
@@ -61,7 +59,6 @@ export class ArticleService {
     articleId: string,
     updateArticleDto: UpdateArticleDto,
   ): Promise<any> {
-    console.log(updateArticleDto);
     return `This action updates a #${articleId} article`;
   }
 

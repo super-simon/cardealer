@@ -1,34 +1,85 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Patch,
+  Post,
+  UseGuards,
+} from '@nestjs/common';
+import {
+  ApiBearerAuth,
+  ApiNotFoundResponse,
+  ApiTags,
+  ApiUnauthorizedResponse,
+} from '@nestjs/swagger';
+import { RoleEnum } from 'src/database/entities/enums/role.enum';
+import { Roles } from '../auth/decorators/roles.decorator';
+import { RolesGuard } from '../auth/guards/roles.guard';
 import { BrandService } from './brand.service';
-import { CreateBrandDto } from './dto/create-brand.dto';
-import { UpdateBrandDto } from './dto/update-brand.dto';
+import { CreateBrandReqDto } from './dto/req/create-brand.dto';
+import { UpdateBrandReqDto } from './dto/req/update-brand.dto';
+import { BrandResDto } from './dto/res/brand.res.dto';
 
-@Controller('brand')
+@Controller('brands')
+@ApiTags('Brand')
 export class BrandController {
   constructor(private readonly brandService: BrandService) {}
 
+  @UseGuards(RolesGuard)
+  @Roles([RoleEnum.ADMIN, RoleEnum.MANAGER])
+  @ApiBearerAuth()
+  @ApiUnauthorizedResponse({ description: 'Unauthorized' })
   @Post()
-  create(@Body() createBrandDto: CreateBrandDto) {
-    return this.brandService.create(createBrandDto);
+  create(@Body() createBrandReqDto: CreateBrandReqDto): Promise<BrandResDto> {
+    return this.brandService.create(createBrandReqDto);
+  }
+
+  @UseGuards(RolesGuard)
+  @Roles([RoleEnum.ADMIN, RoleEnum.MANAGER])
+  @ApiBearerAuth()
+  @ApiUnauthorizedResponse({ description: 'Unauthorized' })
+  @ApiNotFoundResponse()
+  @Patch(':brandId')
+  async update(
+    @Param('brandId') brandId: string,
+    @Body() updateBrandReqDto: UpdateBrandReqDto,
+  ): Promise<BrandResDto> {
+    return await this.brandService.update(brandId, updateBrandReqDto);
+  }
+
+  @UseGuards(RolesGuard)
+  @Roles([RoleEnum.ADMIN, RoleEnum.MANAGER])
+  @ApiBearerAuth()
+  @ApiUnauthorizedResponse({ description: 'Unauthorized' })
+  @ApiNotFoundResponse()
+  @Patch('by-name/:brandName')
+  async updateByName(
+    @Param('brandName') brandName: string,
+    @Body() updateBrandReqDto: UpdateBrandReqDto,
+  ): Promise<BrandResDto> {
+    return await this.brandService.updateByName(brandName, updateBrandReqDto);
   }
 
   @Get()
+  @ApiBearerAuth()
   findAll() {
     return this.brandService.findAll();
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.brandService.findOne(+id);
+  @Get(':brandId')
+  findOne(@Param('brandId') brandId: string) {
+    return this.brandService.findOne(brandId);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateBrandDto: UpdateBrandDto) {
-    return this.brandService.update(+id, updateBrandDto);
+  @Get('by-name/:brandName')
+  findOneByName(@Param('brandName') brandName: string) {
+    return this.brandService.findOneByName(brandName);
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.brandService.remove(+id);
+  @Delete(':brandId')
+  remove(@Param('brandId') brandId: string) {
+    return this.brandService.remove(brandId);
   }
 }

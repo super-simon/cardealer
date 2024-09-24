@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { CreateAdvertDto } from './dto/create-advert.dto';
-import { UpdateAdvertDto } from './dto/update-advert.dto';
+import { CreateAdvertDto } from './dto/req/create-advert.req.dto';
+import { UpdateAdvertDto } from './dto/req/update-advert.reqdto';
 
 @Injectable()
 export class AdvertService {

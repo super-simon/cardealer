@@ -55,7 +55,6 @@ export class AuthService {
       throw new UnauthorizedException();
     }
     const isPasswordValid = await bcrypt.compare(dto.password, user.password);
-    console.log(dto.password, isPasswordValid);
     if (!isPasswordValid) {
       throw new UnauthorizedException();
     }

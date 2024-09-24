@@ -7,20 +7,17 @@ import { UserEntity } from './user.entity';
 @Entity(TableNameEnum.ADVERTS)
 export class AdvertEntity extends CreateUpdateModel {
   @Column('text')
-  title: string;
-
-  @Column('text')
   description: string;
 
   @Column()
   model_id: string;
-  @ManyToOne(() => ModelEntity, (entity) => entity.articles)
+  @ManyToOne(() => ModelEntity, (entity) => entity.adverts)
   @JoinColumn({ name: 'model_id' })
   model?: UserEntity;
 
   @Column()
   user_id: string;
-  @ManyToOne(() => UserEntity, (entity) => entity.articles)
+  @ManyToOne(() => UserEntity, (entity) => entity.adverts)
   @JoinColumn({ name: 'user_id' })
   user?: UserEntity;
 }

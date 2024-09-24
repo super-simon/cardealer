@@ -1,5 +1,6 @@
 import { Column, Entity, OneToMany } from 'typeorm';
 
+import { AdvertEntity } from './advert.entity';
 import { ArticleEntity } from './article.entity';
 import { CommentEntity } from './comment.entity';
 import { RoleEnum } from './enums/role.enum';
@@ -37,6 +38,9 @@ export class UserEntity extends CreateUpdateModel {
 
   @OneToMany(() => ArticleEntity, (entity) => entity.user)
   articles?: ArticleEntity[];
+
+  @OneToMany(() => AdvertEntity, (entity) => entity.user)
+  adverts?: AdvertEntity[];
 
   @OneToMany(() => RefreshTokenEntity, (entity) => entity.user)
   refreshTokens?: RefreshTokenEntity[];

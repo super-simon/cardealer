@@ -1,6 +1,7 @@
 import { Global, Module } from '@nestjs/common';
 
 import { ArticleRepository } from './services/article.repository';
+import { BrandRepository } from './services/brand.repository';
 import { CommentRepository } from './services/comment.repository';
 import { FollowRepository } from './services/follow.repository';
 import { LikeRepository } from './services/like.repository';
@@ -16,6 +17,7 @@ const repositories = [
   TagRepository,
   RefreshTokenRepository,
   FollowRepository,
+  BrandRepository,
 ];
 
 @Global()
