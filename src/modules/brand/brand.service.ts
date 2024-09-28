@@ -1,12 +1,20 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  ConflictException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { BrandRepository } from '../repository/services/brand.repository';
+import { ModelRepository } from '../repository/services/model.repository';
 import { CreateBrandReqDto } from './dto/req/create-brand.dto';
 import { UpdateBrandReqDto } from './dto/req/update-brand.dto';
 import { BrandResDto } from './dto/res/brand.res.dto';
 
 @Injectable()
 export class BrandService {
-  constructor(private readonly brandRepository: BrandRepository) {}
+  constructor(
+    private readonly brandRepository: BrandRepository,
+    private readonly modelRepository: ModelRepository,
+  ) {}
 
   async create(createBrandReqDto: CreateBrandReqDto): Promise<BrandResDto> {
     return await this.brandRepository.save(
@@ -14,16 +22,24 @@ export class BrandService {
     );
   }
 
-  findAll() {
-    return `This action returns all brand`;
+  async getList() {
+    return await this.brandRepository.getList();
   }
 
-  findOne(id: string) {
-    return `This action returns a #${id} brand`;
+  async getOne(id: string) {
+    try {
+      return await this.brandRepository.getOneByOrFail({ id });
+    } catch {
+      throw new NotFoundException('No brand with this id');
+    }
   }
 
-  findOneByName(id: string) {
-    return `This action returns a #${id} brand`;
+  getOneByName(title: string) {
+    try {
+      return this.brandRepository.getOneByOrFail({ title });
+    } catch {
+      throw new NotFoundException('No brand with this id');
+    }
   }
 
   async update(
@@ -50,7 +66,15 @@ export class BrandService {
     return await this.brandRepository.save(brand);
   }
 
-  remove(brandId: string) {
-    return `This action removes a #${brandId} brand`;
+  async remove(brandId: string): Promise<void> {
+    const brand = await this.brandRepository.findOneBy({ id: brandId });
+    if (!brand) {
+      throw new NotFoundException('Brand does not exist');
+    }
+    const models = await this.modelRepository.findBy({ brand: brand });
+    if (models.length > 0) {
+      throw new ConflictException('Brand is used');
+    }
+    this.brandRepository.remove(brand);
   }
 }

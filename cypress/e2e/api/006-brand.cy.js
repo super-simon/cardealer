@@ -30,17 +30,19 @@ describe('Brands', () => {
     cy.signIn('manager@gmail.com', '123qwe!@#QWE', 201);
   });
 
-  if (Cypress.env('createSpecificItems')) {
-    it('201 Create a brand with existing title as an manager', function () {
-      cy.createBrand('Infiniti', 201);
-    });
-  }
+  it('201 Create a brand with existing title as an manager', function () {
+    cy.createBrand('Infiniti', 201);
+  });
 
-  it('200 Update brand by name with existing title as an manager', function () {
+  it('200 Update brand by name as an manager', function () {
     cy.updateBrandByName('Infiniti', 'Infiniti2', 200);
   });
 
-  it('200 Update brand by Id with existing title as an manager', function () {
+  it('200 Update brand by Id as an manager', function () {
     cy.updateBrandById(Cypress.env('lastBrandId'), 'Infiniti', 200);
+  });
+
+  it('200 Delete brand by Id as an manager', function () {
+    cy.deleteBrandById(Cypress.env('lastBrandId'), 200);
   });
 });

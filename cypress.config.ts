@@ -8,6 +8,6 @@ export default defineConfig({
   },
   env: {
     baseUrl: 'http://127.0.0.1:3000',
-    createSpecificItems: false,
+    createSpecificItems: true,
   },
 });

@@ -16,7 +16,9 @@ import {
 } from '@nestjs/swagger';
 import { RoleEnum } from 'src/database/entities/enums/role.enum';
 import { Roles } from '../auth/decorators/roles.decorator';
+import { SkipAuth } from '../auth/decorators/skip-auth.decorator';
 import { RolesGuard } from '../auth/guards/roles.guard';
+import { BrandMapper } from './brand.mapper';
 import { BrandService } from './brand.service';
 import { CreateBrandReqDto } from './dto/req/create-brand.dto';
 import { UpdateBrandReqDto } from './dto/req/update-brand.dto';
@@ -62,24 +64,37 @@ export class BrandController {
     return await this.brandService.updateByName(brandName, updateBrandReqDto);
   }
 
+  @SkipAuth()
   @Get()
-  @ApiBearerAuth()
-  findAll() {
-    return this.brandService.findAll();
+  async getList(): Promise<BrandResDto[]> {
+    return BrandMapper.toResponseListDTO(await this.brandService.getList());
   }
 
+  @SkipAuth()
+  @ApiNotFoundResponse({ description: 'Not Found' })
   @Get(':brandId')
-  findOne(@Param('brandId') brandId: string) {
-    return this.brandService.findOne(brandId);
+  async findOne(@Param('brandId') brandId: string): Promise<BrandResDto> {
+    return BrandMapper.toResponseDTO(await this.brandService.getOne(brandId));
   }
 
+  @SkipAuth()
+  @ApiNotFoundResponse({ description: 'Not Found' })
   @Get('by-name/:brandName')
-  findOneByName(@Param('brandName') brandName: string) {
-    return this.brandService.findOneByName(brandName);
+  async findOneByName(
+    @Param('brandName') brandName: string,
+  ): Promise<BrandResDto> {
+    return BrandMapper.toResponseDTO(
+      await this.brandService.getOneByName(brandName),
+    );
   }
 
+  @UseGuards(RolesGuard)
+  @Roles([RoleEnum.ADMIN, RoleEnum.MANAGER])
+  @ApiBearerAuth()
+  @ApiUnauthorizedResponse({ description: 'Unauthorized' })
+  @ApiNotFoundResponse({ description: 'Not Found' })
   @Delete(':brandId')
-  remove(@Param('brandId') brandId: string) {
-    return this.brandService.remove(brandId);
+  async remove(@Param('brandId') brandId: string) {
+    return await this.brandService.remove(brandId);
   }
 }
