@@ -156,4 +156,9 @@ export class AdvertService {
     });
     return await this.advertRepository.save(advert);
   }
+
+  async remove(advertId: string): Promise<void> {
+    const advert = await this.findOrThrow(advertId);
+    this.advertRepository.remove(advert);
+  }
 }

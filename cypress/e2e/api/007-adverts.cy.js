@@ -139,4 +139,21 @@ describe('Adverts', () => {
   it('200 Delete adwert as a seller', function () {
     cy.deleteMyAdvert(Cypress.env('lastAdvertId'), 200, 'SELLER');
   });
+
+  it('201 Create an advert as a seller', function () {
+    cy.createMyAdvert(
+      {
+        description: 'Super fucking car',
+        model_id: Cypress.env('anyModelId'),
+        price: 500000,
+        currency: 'UAH',
+      },
+      201,
+      'SELLER',
+    );
+  });
+
+  it('200 Delete adwert as a manager', function () {
+    cy.deleteAdvert(Cypress.env('lastAdvertId'), 200, 'MANAGER');
+  });
 });

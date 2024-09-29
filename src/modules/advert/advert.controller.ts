@@ -1,4 +1,11 @@
-import { Body, Controller, Param, Patch, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Param,
+  Patch,
+  UseGuards,
+} from '@nestjs/common';
 import {
   ApiBearerAuth,
   ApiNotFoundResponse,
@@ -28,5 +35,15 @@ export class AdvertController {
     @Body() updateAdvertReqDto: UpdateAdvertReqDto,
   ): Promise<AdvertEntity> {
     return await this.advertService.update(advertId, updateAdvertReqDto);
+  }
+
+  @UseGuards(RolesGuard)
+  @Roles([RoleEnum.MANAGER, RoleEnum.ADMIN])
+  @ApiBearerAuth()
+  @ApiUnauthorizedResponse({ description: 'Unauthorized' })
+  @ApiNotFoundResponse({ description: 'Not Found' })
+  @Delete(':advertId')
+  async removeMy(@Param('advertId') advertId: string): Promise<void> {
+    return await this.advertService.remove(advertId);
   }
 }

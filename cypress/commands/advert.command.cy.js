@@ -66,3 +66,18 @@ Cypress.Commands.add('deleteMyAdvert', (id, code, role) => {
     .its('status')
     .should('eq', code);
 });
+
+Cypress.Commands.add('deleteAdvert', (id, code, role) => {
+  const accessToken = Cypress.env(`${role}AccessToken`);
+  const authorization = `Bearer ${accessToken}`;
+  cy.request({
+    method: 'DELETE',
+    url: Cypress.env('baseUrl') + `/adverts/${id}`,
+    headers: {
+      authorization,
+    },
+    failOnStatusCode: false,
+  })
+    .its('status')
+    .should('eq', code);
+});
