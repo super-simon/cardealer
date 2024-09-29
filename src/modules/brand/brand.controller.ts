@@ -10,6 +10,7 @@ import {
 } from '@nestjs/common';
 import {
   ApiBearerAuth,
+  ApiConflictResponse,
   ApiNotFoundResponse,
   ApiTags,
   ApiUnauthorizedResponse,
@@ -33,9 +34,12 @@ export class BrandController {
   @Roles([RoleEnum.ADMIN, RoleEnum.MANAGER])
   @ApiBearerAuth()
   @ApiUnauthorizedResponse({ description: 'Unauthorized' })
+  @ApiConflictResponse()
   @Post()
-  create(@Body() createBrandReqDto: CreateBrandReqDto): Promise<BrandResDto> {
-    return this.brandService.create(createBrandReqDto);
+  async create(
+    @Body() createBrandReqDto: CreateBrandReqDto,
+  ): Promise<BrandResDto> {
+    return await this.brandService.create(createBrandReqDto);
   }
 
   @UseGuards(RolesGuard)
@@ -93,6 +97,7 @@ export class BrandController {
   @ApiBearerAuth()
   @ApiUnauthorizedResponse({ description: 'Unauthorized' })
   @ApiNotFoundResponse({ description: 'Not Found' })
+  @ApiConflictResponse()
   @Delete(':brandId')
   async remove(@Param('brandId') brandId: string) {
     return await this.brandService.remove(brandId);

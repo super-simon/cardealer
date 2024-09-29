@@ -3,6 +3,7 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
+import { BrandEntity } from 'src/database/entities/brand.entity';
 import { BrandRepository } from '../repository/services/brand.repository';
 import { ModelRepository } from '../repository/services/model.repository';
 import { CreateBrandReqDto } from './dto/req/create-brand.dto';
@@ -16,7 +17,14 @@ export class BrandService {
     private readonly modelRepository: ModelRepository,
   ) {}
 
-  async create(createBrandReqDto: CreateBrandReqDto): Promise<BrandResDto> {
+  async create(createBrandReqDto: CreateBrandReqDto): Promise<BrandEntity> {
+    const brand = await this.brandRepository.findOneBy({
+      title: createBrandReqDto.title,
+    });
+    if (brand) {
+      throw new ConflictException('This brand already exist');
+    }
+
     return await this.brandRepository.save(
       this.brandRepository.create(createBrandReqDto),
     );

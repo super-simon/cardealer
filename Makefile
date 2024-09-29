@@ -5,3 +5,9 @@ reset:
 	npm run schema:drop
 	npm run migration:run
 	npm run seed
+
+e2e-all:
+	npx cypress run
+
+e2e-models:
+	npx cypress run --spec cypress/e2e/api/006-brands-and-models.cy.js

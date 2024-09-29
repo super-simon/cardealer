@@ -1,17 +1,17 @@
 import { ApiProperty } from '@nestjs/swagger';
 
-export class BaseBrandResDto {
+export class BaseModelResDto {
   @ApiProperty({
     example: '796cea24-a328-4463-a5e1-85a779e4780f',
-    description: 'Brand ID',
+    description: 'Model ID',
   })
   id: string;
 
   @ApiProperty({
-    example: 'Ford',
-    description: 'Brand title',
+    example: 'Focus',
+    description: 'Model title',
   })
   title: string;
 
-  brand: string;
+  brand: { id: string; title: string };
 }

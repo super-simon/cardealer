@@ -8,6 +8,7 @@ import { AuthModule } from './auth/auth.module';
 import { BrandModule } from './brand/brand.module';
 import { FileStorageModule } from './file-storage/file-storage.module';
 import { LoggerModule } from './logger/logger.module';
+import { ModelModule } from './model/model.module';
 import { PostgresModule } from './postgres/postgres.module';
 import { RedisModule } from './redis/redis.module';
 import { RepositoryModule } from './repository/repository.module';
@@ -30,6 +31,7 @@ import { UsersModule } from './users/users.module';
     TagModule,
     FileStorageModule,
     BrandModule,
+    ModelModule,
   ],
   providers: [
     {
