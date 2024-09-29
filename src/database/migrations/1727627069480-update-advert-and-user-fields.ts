@@ -10,10 +10,10 @@ export class UpdateAdvertAndUserFields1727627069480
       `ALTER TABLE "adverts" ADD "price" double precision NOT NULL`,
     );
     await queryRunner.query(
-      `CREATE TYPE "public"."adverts_role_enum" AS ENUM('UAH', 'EUR', 'USD')`,
+      `CREATE TYPE "public"."adverts_currency_enum" AS ENUM('UAH', 'EUR', 'USD')`,
     );
     await queryRunner.query(
-      `ALTER TABLE "adverts" ADD "role" "public"."adverts_role_enum" NOT NULL DEFAULT 'UAH'`,
+      `ALTER TABLE "adverts" ADD "currency" "public"."adverts_currency_enum" NOT NULL DEFAULT 'UAH'`,
     );
     await queryRunner.query(
       `CREATE TYPE "public"."adverts_status_enum" AS ENUM('DRAFT', 'ACTIVE', 'DISABLED', 'DELETED')`,
@@ -46,8 +46,8 @@ export class UpdateAdvertAndUserFields1727627069480
     await queryRunner.query(`ALTER TABLE "adverts" DROP COLUMN "revision"`);
     await queryRunner.query(`ALTER TABLE "adverts" DROP COLUMN "status"`);
     await queryRunner.query(`DROP TYPE "public"."adverts_status_enum"`);
-    await queryRunner.query(`ALTER TABLE "adverts" DROP COLUMN "role"`);
-    await queryRunner.query(`DROP TYPE "public"."adverts_role_enum"`);
+    await queryRunner.query(`ALTER TABLE "adverts" DROP COLUMN "currency"`);
+    await queryRunner.query(`DROP TYPE "public"."adverts_currency_enum"`);
     await queryRunner.query(`ALTER TABLE "adverts" DROP COLUMN "price"`);
   }
 }

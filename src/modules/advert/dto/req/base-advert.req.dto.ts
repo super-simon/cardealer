@@ -2,6 +2,7 @@ import { ApiProperty } from '@nestjs/swagger';
 import { Transform, Type } from 'class-transformer';
 import { IsEnum, IsNumber, IsString, Length } from 'class-validator';
 import { TransformHelper } from 'src/common/helpers/transform.helper';
+import { AdvertStatusEnum } from 'src/database/entities/enums/advert-status.enum';
 import { CurrencyEnum } from 'src/database/entities/enums/currency.enum';
 
 export class BaseAdvertReqDto {
@@ -22,4 +23,12 @@ export class BaseAdvertReqDto {
   @IsString()
   @IsEnum(CurrencyEnum)
   currency: CurrencyEnum;
+
+  @ApiProperty({ example: AdvertStatusEnum.ACTIVE })
+  @IsString()
+  @IsEnum(AdvertStatusEnum)
+  status: AdvertStatusEnum;
+
+  @IsNumber()
+  revision: number;
 }

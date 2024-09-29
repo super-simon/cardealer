@@ -47,6 +47,78 @@ describe('Adverts', () => {
     );
   });
 
+  it('200 Update an advert with bad words as a seller. First attempt.', function () {
+    cy.updateMyAdvert(
+      Cypress.env('lastAdvertId'),
+      {
+        description: 'Super fucking car',
+        model_id: Cypress.env('anyModelId'),
+        price: 600000,
+        currency: 'UAH',
+      },
+      200,
+      'SELLER',
+    );
+  });
+
+  it('200 Update an advert with bad words as a seller. Second attempt.', function () {
+    cy.updateMyAdvert(
+      Cypress.env('lastAdvertId'),
+      {
+        description: 'Super fucking car',
+        model_id: Cypress.env('anyModelId'),
+        price: 600000,
+        currency: 'UAH',
+      },
+      200,
+      'SELLER',
+    );
+  });
+
+  it('403 Update an advert with bad words as a seller. Third attempt.', function () {
+    cy.updateMyAdvert(
+      Cypress.env('lastAdvertId'),
+      {
+        description: 'Super fucking car',
+        model_id: Cypress.env('anyModelId'),
+        price: 600000,
+        currency: 'UAH',
+      },
+      403,
+      'SELLER',
+    );
+  });
+
+  it('200 Update an advert with bad words as a manager.', function () {
+    cy.updateAdvert(
+      Cypress.env('lastAdvertId'),
+      {
+        description: 'Super fucking car',
+        model_id: Cypress.env('anyModelId'),
+        price: 600000,
+        currency: 'UAH',
+        status: 'ACTIVE',
+        revision: 3,
+      },
+      200,
+      'MANAGER',
+    );
+  });
+
+  it('200 Update an advert without bad words as a seller. Third attempt.', function () {
+    cy.updateMyAdvert(
+      Cypress.env('lastAdvertId'),
+      {
+        description: 'Super fast car',
+        model_id: Cypress.env('anyModelId'),
+        price: 700000,
+        currency: 'UAH',
+      },
+      200,
+      'SELLER',
+    );
+  });
+
   it('403 Create second advert as a seller', function () {
     cy.createMyAdvert(
       {

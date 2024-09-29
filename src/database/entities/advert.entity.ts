@@ -15,7 +15,7 @@ export class AdvertEntity extends CreateUpdateModel {
   price: number;
 
   @Column('enum', { enum: CurrencyEnum, default: CurrencyEnum.UAH })
-  role: CurrencyEnum;
+  currency: CurrencyEnum;
 
   @Column('enum', { enum: AdvertStatusEnum, default: AdvertStatusEnum.DRAFT })
   status: AdvertStatusEnum;
@@ -25,7 +25,10 @@ export class AdvertEntity extends CreateUpdateModel {
 
   @Column()
   model_id: string;
-  @ManyToOne(() => ModelEntity, (entity) => entity.adverts)
+  @ManyToOne(() => ModelEntity, (entity) => entity.adverts, {
+    onUpdate: 'CASCADE',
+    onDelete: 'CASCADE',
+  })
   @JoinColumn({ name: 'model_id' })
   model?: ModelEntity;
 
