@@ -156,4 +156,37 @@ describe('Adverts', () => {
   it('200 Delete adwert as a manager', function () {
     cy.deleteAdvert(Cypress.env('lastAdvertId'), 200, 'MANAGER');
   });
+
+  it('201 Create an advert as a seller', function () {
+    cy.createMyAdvert(
+      {
+        description: 'Super fucking car',
+        model_id: Cypress.env('anyModelId'),
+        price: 500000,
+        currency: 'UAH',
+      },
+      201,
+      'SELLER',
+    );
+  });
+
+  it('200 get my adverts as seller and delete all of them', function () {
+    const accessToken = Cypress.env('SELLERAccessToken');
+    const authorization = `Bearer ${accessToken}`;
+    cy.request({
+      method: 'GET',
+      headers: {
+        authorization,
+      },
+      url: Cypress.env('baseUrl') + `/adverts/my`,
+    })
+      .then((res) => {
+        for (const advert of res.body) {
+          cy.deleteMyAdvert(advert.id, 200, 'SELLER');
+        }
+        return cy.wrap(res);
+      })
+      .its('status')
+      .should('eq', 200);
+  });
 });

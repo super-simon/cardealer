@@ -1,4 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { AdvertStatusEnum } from 'src/database/entities/enums/advert-status.enum';
+import { CurrencyEnum } from 'src/database/entities/enums/currency.enum';
+import { ModelResDto } from 'src/modules/model/dto/res/model.res.dto';
 import { UserResDto } from 'src/modules/users/dto/res/user.res.dto';
 
 export class BaseAdvertResDto {
@@ -15,21 +18,39 @@ export class BaseAdvertResDto {
   description: string;
 
   @ApiProperty({
-    description: 'Advert car model id',
+    example: 'ACTIVE',
+    description: 'Advert Status',
   })
-  model: string;
+  status: AdvertStatusEnum;
+
+  @ApiProperty({
+    description: 'Advert car model (id, title)',
+  })
+  model: ModelResDto;
 
   @ApiProperty({
     example: '2021-09-29T10:00:00.000Z',
-    description: 'Article Created Date',
+    description: 'Advert Created Date',
   })
   created: Date;
 
   @ApiProperty({
     example: '2021-09-29T10:00:00.000Z',
-    description: 'Article Updated Date',
+    description: 'Advert Updated Date',
   })
   updated: Date;
+
+  @ApiProperty({
+    example: '500000',
+    description: 'Car price',
+  })
+  price: number;
+
+  @ApiProperty({
+    example: 'UAH',
+    description: 'Price currency',
+  })
+  currency: CurrencyEnum;
 
   user?: UserResDto;
 }

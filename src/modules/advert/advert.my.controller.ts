@@ -2,6 +2,7 @@ import {
   Body,
   Controller,
   Delete,
+  Get,
   Param,
   Patch,
   Post,
@@ -19,9 +20,11 @@ import { CurrentUser } from '../auth/decorators/current-user.decorator';
 import { Roles } from '../auth/decorators/roles.decorator';
 import { RolesGuard } from '../auth/guards/roles.guard';
 import { IUserData } from '../auth/interfaces/user-data.interface';
+import { AdvertMapper } from './advert.mapper';
 import { AdvertService } from './advert.service';
 import { CreateMyAdvertReqDto } from './dto/req/create-my-advert.req.dto';
 import { UpdateMyAdvertReqDto } from './dto/req/update-my-advert.req.dto';
+import { AdvertMyListItemResDto } from './dto/res/advert-my-list-item.res.dto';
 
 @ApiTags('My Advert')
 @Controller('adverts/my')
@@ -39,6 +42,19 @@ export class AdvertMyController {
     @CurrentUser() userData: IUserData,
   ): Promise<AdvertEntity> {
     return this.advertService.createMy(userData, createMyAdvertDto);
+  }
+
+  @ApiBearerAuth()
+  @ApiUnauthorizedResponse({ description: 'Unauthorized' })
+  @Get()
+  public async getMyList(
+    @CurrentUser() userData: IUserData,
+  ): Promise<AdvertMyListItemResDto[]> {
+    const adverts = await this.advertService.getMyList(userData);
+    console.log(adverts);
+    const res = AdvertMapper.toResponseListDTO(adverts);
+    console.log(res);
+    return res;
   }
 
   @UseGuards(RolesGuard)
