@@ -11,3 +11,6 @@ e2e-all:
 
 e2e-models:
 	npx cypress run --spec cypress/e2e/api/006-brands-and-models.cy.js
+
+e2e-adverts:
+	npx cypress run --spec cypress/e2e/api/007-adverts.cy.js

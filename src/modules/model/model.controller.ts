@@ -35,7 +35,6 @@ export class ModelController {
   @ApiUnauthorizedResponse({ description: 'Unauthorized' })
   @ApiNotFoundResponse({ description: 'Brand not Found' })
   @Post()
-  @Post()
   create(@Body() createModelReqDto: CreateModelReqDto) {
     return this.modelService.create(createModelReqDto);
   }

@@ -1,3 +1,4 @@
+import { AccountTypeEnum } from 'src/database/entities/enums/account-type.enum';
 import { RoleEnum } from 'src/database/entities/enums/role.enum';
 
 export class BaseUserResDto {
@@ -12,6 +13,8 @@ export class BaseUserResDto {
   image?: string;
 
   role: RoleEnum;
+
+  type: AccountTypeEnum;
 
   createdAt: Date;
 

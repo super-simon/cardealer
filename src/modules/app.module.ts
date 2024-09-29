@@ -3,6 +3,7 @@ import { ConfigModule } from '@nestjs/config';
 import { APP_FILTER } from '@nestjs/core';
 import { GlobalExceptionFilter } from 'src/common/http/global-exception.filter';
 import configuration from '../config/configuration';
+import { AdvertModule } from './advert/advert.module';
 import { PostsModule } from './article/article.module';
 import { AuthModule } from './auth/auth.module';
 import { BrandModule } from './brand/brand.module';
@@ -32,6 +33,7 @@ import { UsersModule } from './users/users.module';
     FileStorageModule,
     BrandModule,
     ModelModule,
+    AdvertModule,
   ],
   providers: [
     {

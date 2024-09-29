@@ -1,0 +1,70 @@
+import '../../commands/advert.command.cy';
+import '../../commands/login.command.cy';
+
+describe('Adverts', () => {
+  before(() => {
+    cy.signIn('seller@gmail.com', '123qwe!@#QWE', 201, 'SELLER');
+    cy.signIn('manager@gmail.com', '123qwe!@#QWE', 201, 'MANAGER');
+    cy.signIn('admin@admin.admin', '123qwe!@#QWE', 201, 'ADMIN');
+    cy.signIn('client@gmail.com', '123qwe!@#QWE', 201, 'CLIENT');
+  });
+
+  it('200 get brands as anonimus', function () {
+    cy.request({
+      method: 'GET',
+      url: Cypress.env('baseUrl') + `/brands`,
+    })
+      .then((res) => {
+        Cypress.env('anyModelId', res.body[0].models[0].id);
+      })
+      .its('status')
+      .should('eq', 200);
+  });
+
+  it('403 Create advert as a client', function () {
+    cy.createMyAdvert(
+      {
+        description: 'Super fucking car',
+        model_id: Cypress.env('anyModelId'),
+        price: 500000,
+        currency: 'UAH',
+      },
+      403,
+      'CLIENT',
+    );
+  });
+
+  it('201 Create an advert with bad words as a seller', function () {
+    cy.createMyAdvert(
+      {
+        description: 'Super fucking car',
+        model_id: Cypress.env('anyModelId'),
+        price: 500000,
+        currency: 'UAH',
+      },
+      201,
+      'SELLER',
+    );
+  });
+
+  it('403 Create second advert as a seller', function () {
+    cy.createMyAdvert(
+      {
+        description: 'Super car',
+        model_id: Cypress.env('anyModelId'),
+        price: 500000,
+        currency: 'UAH',
+      },
+      403,
+      'SELLER',
+    );
+  });
+
+  it('404 Delete adwert with wrong id as a seller', function () {
+    cy.deleteMyAdvert('e57bbb32-4502-4bf6-97fb-2b2b9d8236d4', 404, 'SELLER');
+  });
+
+  it('200 Delete adwert as a seller', function () {
+    cy.deleteMyAdvert(Cypress.env('lastAdvertId'), 200, 'SELLER');
+  });
+});

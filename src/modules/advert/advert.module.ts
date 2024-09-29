@@ -1,9 +1,10 @@
 import { Module } from '@nestjs/common';
-import { AdvertService } from './advert.service';
 import { AdvertController } from './advert.controller';
+import { AdvertMyController } from './advert.my.controller';
+import { AdvertService } from './advert.service';
 
 @Module({
-  controllers: [AdvertController],
+  controllers: [AdvertController, AdvertMyController],
   providers: [AdvertService],
 })
 export class AdvertModule {}
