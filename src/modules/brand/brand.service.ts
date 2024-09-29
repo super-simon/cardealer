@@ -34,11 +34,11 @@ export class BrandService {
     }
   }
 
-  getOneByName(title: string) {
+  async getOneByName(title: string) {
     try {
-      return this.brandRepository.getOneByOrFail({ title });
+      return await this.brandRepository.getOneByOrFail({ title });
     } catch {
-      throw new NotFoundException('No brand with this id');
+      throw new NotFoundException('No brand with this Name');
     }
   }
 

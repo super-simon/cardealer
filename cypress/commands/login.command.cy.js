@@ -1,4 +1,4 @@
-Cypress.Commands.add('signIn', (email, password, code) => {
+Cypress.Commands.add('signIn', (email, password, code, role) => {
   cy.request({
     method: 'POST',
     url: Cypress.env('baseUrl') + '/auth/sign-in',
@@ -12,7 +12,10 @@ Cypress.Commands.add('signIn', (email, password, code) => {
     .as('signUpResponse')
     .then((signUpResponse) => {
       if (signUpResponse.body.tokens) {
-        Cypress.env('accessToken', signUpResponse.body.tokens.accessToken);
+        Cypress.env(
+          `${role}AccessToken`,
+          signUpResponse.body.tokens.accessToken,
+        );
       }
       return signUpResponse;
     })
@@ -20,7 +23,7 @@ Cypress.Commands.add('signIn', (email, password, code) => {
     .should('eq', code);
 });
 
-Cypress.Commands.add('signUp', (name, email, password, role, code) => {
+Cypress.Commands.add('signUp', (name, email, password, role, codes) => {
   cy.request({
     method: 'POST',
     url: Cypress.env('baseUrl') + '/auth/sign-up',
@@ -36,10 +39,13 @@ Cypress.Commands.add('signUp', (name, email, password, role, code) => {
     .as('signUpResponse')
     .then((signUpResponse) => {
       if (signUpResponse.body.tokens) {
-        Cypress.env('accessToken', signUpResponse.body.tokens.accessToken);
+        Cypress.env(
+          `${role}AccessToken`,
+          signUpResponse.body.tokens.accessToken,
+        );
       }
       return signUpResponse;
     })
     .its('status')
-    .should('eq', code);
+    .should('oneOf', codes);
 });

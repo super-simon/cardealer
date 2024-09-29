@@ -15,7 +15,9 @@ export class BrandRepository extends Repository<BrandEntity> {
     return await qb.getMany();
   }
 
-  public async getOneByOrFail(options): Promise<BrandEntity> {
+  public async getOneByOrFail(
+    options: Record<string, string>,
+  ): Promise<BrandEntity> {
     const qb = this.createQueryBuilder('brand');
     for (const option in options) {
       qb.andWhere(`brand.${option} = :${option}`, {

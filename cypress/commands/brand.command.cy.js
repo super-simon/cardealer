@@ -1,5 +1,5 @@
-Cypress.Commands.add('createBrand', (title, code) => {
-  const accessToken = Cypress.env('accessToken');
+Cypress.Commands.add('createBrand', (title, code, role) => {
+  const accessToken = Cypress.env(`${role}AccessToken`);
   const authorization = `Bearer ${accessToken}`;
   cy.request({
     method: 'POST',
@@ -16,8 +16,8 @@ Cypress.Commands.add('createBrand', (title, code) => {
     .should('eq', code);
 });
 
-Cypress.Commands.add('updateBrandByName', (name, title, code) => {
-  const accessToken = Cypress.env('accessToken');
+Cypress.Commands.add('updateBrandByName', (name, title, code, role) => {
+  const accessToken = Cypress.env(`${role}AccessToken`);
   const authorization = `Bearer ${accessToken}`;
   cy.request({
     method: 'PATCH',
@@ -38,8 +38,8 @@ Cypress.Commands.add('updateBrandByName', (name, title, code) => {
     .should('eq', code);
 });
 
-Cypress.Commands.add('updateBrandById', (id, title, code) => {
-  const accessToken = Cypress.env('accessToken');
+Cypress.Commands.add('updateBrandById', (id, title, code, role) => {
+  const accessToken = Cypress.env(`${role}AccessToken`);
   const authorization = `Bearer ${accessToken}`;
   cy.request({
     method: 'PATCH',
@@ -60,8 +60,8 @@ Cypress.Commands.add('updateBrandById', (id, title, code) => {
     .should('eq', code);
 });
 
-Cypress.Commands.add('deleteBrandById', (id, code) => {
-  const accessToken = Cypress.env('accessToken');
+Cypress.Commands.add('deleteBrandById', (id, code, role) => {
+  const accessToken = Cypress.env(`${role}AccessToken`);
   const authorization = `Bearer ${accessToken}`;
   cy.request({
     method: 'DELETE',
