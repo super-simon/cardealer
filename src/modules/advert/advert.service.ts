@@ -65,7 +65,14 @@ export class AdvertService {
   }
 
   public async getMyList(userData: IUserData): Promise<AdvertEntity[]> {
-    const myAdverts = await this.advertRepository.getByUser(userData.userId);
+    const myAdverts = await this.advertRepository.getListByUser(
+      userData.userId,
+    );
+    return myAdverts;
+  }
+
+  public async getList(): Promise<AdvertEntity[]> {
+    const myAdverts = await this.advertRepository.getList();
     return myAdverts;
   }
 

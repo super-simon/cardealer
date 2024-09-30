@@ -3,6 +3,7 @@ import { Column, Entity, OneToMany } from 'typeorm';
 import { AdvertEntity } from './advert.entity';
 import { ArticleEntity } from './article.entity';
 import { CommentEntity } from './comment.entity';
+import { AccountStatusEnum } from './enums/account-status.enum';
 import { AccountTypeEnum } from './enums/account-type.enum';
 import { RoleEnum } from './enums/role.enum';
 import { TableNameEnum } from './enums/table-name.enum';
@@ -34,8 +35,11 @@ export class UserEntity extends CreateUpdateModel {
   @Column('enum', { enum: AccountTypeEnum, default: AccountTypeEnum.BASE })
   type: AccountTypeEnum;
 
-  @Column('enum', { enum: AccountTypeEnum, default: AccountTypeEnum.BASE })
-  status: AccountTypeEnum;
+  @Column('enum', {
+    enum: AccountStatusEnum,
+    default: AccountStatusEnum.ACTIVE,
+  })
+  status: AccountStatusEnum;
 
   @OneToMany(() => LikeEntity, (entity) => entity.user)
   likes?: LikeEntity[];

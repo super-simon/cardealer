@@ -8,6 +8,7 @@ import {
   HttpStatus,
   Param,
   ParseUUIDPipe,
+  Patch,
   Post,
   Put,
   UploadedFile,
@@ -33,6 +34,7 @@ import { SkipAuth } from '../auth/decorators/skip-auth.decorator';
 import { RolesGuard } from '../auth/guards/roles.guard';
 import { IUserData } from '../auth/interfaces/user-data.interface';
 import { CreateUserDto } from './dto/req/create-user.dto';
+import { UpdateUserByManagerDto } from './dto/req/update-user-by-manager.dto';
 import { UpdateUserDto } from './dto/req/update-user.dto';
 import { UserResDto } from './dto/res/user.res.dto';
 import { UserMapper } from './user.mapper';
@@ -144,5 +146,24 @@ export class UsersController {
       throw new ForbiddenException("You can't create a user with such role");
     }
     await this.usersService.createUser(createUserDto);
+  }
+
+  @ApiBearerAuth()
+  @UseGuards(RolesGuard)
+  @Roles([RoleEnum.ADMIN, RoleEnum.MANAGER])
+  @ApiUnauthorizedResponse({ description: 'unauthorized' })
+  @ApiForbiddenResponse({ description: 'Forbidden' })
+  @ApiConflictResponse({ description: 'Conflict' })
+  @ApiBadRequestResponse({ description: 'Bad Request' })
+  @Patch(':userId')
+  public async update(
+    @Body() updateUserByManagerDto: UpdateUserByManagerDto,
+    @Param('userId', ParseUUIDPipe) userId: string,
+  ): Promise<UserResDto> {
+    const result = await this.usersService.update(
+      userId,
+      updateUserByManagerDto,
+    );
+    return UserMapper.toResponseDTO(result);
   }
 }

@@ -16,6 +16,7 @@ Cypress.Commands.add('signIn', (email, password, code, role) => {
           `${role}AccessToken`,
           signUpResponse.body.tokens.accessToken,
         );
+        Cypress.env(`${role}id`, signUpResponse.body.user.id);
       }
       return signUpResponse;
     })
@@ -43,6 +44,7 @@ Cypress.Commands.add('signUp', (name, email, password, role, codes) => {
           `${role}AccessToken`,
           signUpResponse.body.tokens.accessToken,
         );
+        Cypress.env(`${role}id`, signUpResponse.body.user.id);
       }
       return signUpResponse;
     })

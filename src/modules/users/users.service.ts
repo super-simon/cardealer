@@ -13,6 +13,7 @@ import { LoggerService } from '../logger/logger.service';
 import { FollowRepository } from '../repository/services/follow.repository';
 import { UserRepository } from '../repository/services/user.repository';
 import { CreateUserDto } from './dto/req/create-user.dto';
+import { UpdateUserByManagerDto } from './dto/req/update-user-by-manager.dto';
 import { UpdateUserDto } from './dto/req/update-user.dto';
 
 @Injectable()
@@ -136,5 +137,14 @@ export class UsersService {
     return await this.userRepository.save(
       this.userRepository.create({ ...dto, password }),
     );
+  }
+
+  public async update(
+    userId: string,
+    updateUserByManagerDto: UpdateUserByManagerDto,
+  ): Promise<UserEntity> {
+    const user = await this.userRepository.findOneBy({ id: userId });
+    this.userRepository.merge(user, updateUserByManagerDto);
+    return await this.userRepository.save(user);
   }
 }

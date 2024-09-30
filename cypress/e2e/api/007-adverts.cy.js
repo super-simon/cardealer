@@ -170,6 +170,64 @@ describe('Adverts', () => {
     );
   });
 
+  it('200 update seller to premium', function () {
+    const accessToken = Cypress.env('MANAGERAccessToken');
+    const authorization = `Bearer ${accessToken}`;
+    cy.request({
+      method: 'PATCH',
+      headers: {
+        authorization,
+      },
+      body: {
+        type: 'PREMIUM',
+      },
+      // failOnStatusCode: false,
+      url: Cypress.env('baseUrl') + `/users/${Cypress.env('SELLERid')}`,
+    })
+      .its('status')
+      .should('eq', 200);
+  });
+
+  it('201 Create a second advert as a premium seller', function () {
+    cy.createMyAdvert(
+      {
+        description: 'Super fucking car',
+        model_id: Cypress.env('anyModelId'),
+        price: 600000,
+        currency: 'UAH',
+      },
+      201,
+      'SELLER',
+    );
+  });
+
+  it('201 Create a third advert as a premium seller', function () {
+    cy.createMyAdvert(
+      {
+        description: 'Super fucking car',
+        model_id: Cypress.env('anyModelId'),
+        price: 600000,
+        currency: 'UAH',
+      },
+      201,
+      'SELLER',
+    );
+  });
+
+  it('200 get all adverts as manager', function () {
+    const accessToken = Cypress.env('MANAGERAccessToken');
+    const authorization = `Bearer ${accessToken}`;
+    cy.request({
+      method: 'GET',
+      headers: {
+        authorization,
+      },
+      url: Cypress.env('baseUrl') + `/adverts`,
+    })
+      .its('status')
+      .should('eq', 200);
+  });
+
   it('200 get my adverts as seller and delete all of them', function () {
     const accessToken = Cypress.env('SELLERAccessToken');
     const authorization = `Bearer ${accessToken}`;
@@ -186,6 +244,24 @@ describe('Adverts', () => {
         }
         return cy.wrap(res);
       })
+      .its('status')
+      .should('eq', 200);
+  });
+
+  it('200 update seller to premium', function () {
+    const accessToken = Cypress.env('MANAGERAccessToken');
+    const authorization = `Bearer ${accessToken}`;
+    cy.request({
+      method: 'PATCH',
+      headers: {
+        authorization,
+      },
+      body: {
+        type: 'BASE',
+      },
+      // failOnStatusCode: false,
+      url: Cypress.env('baseUrl') + `/users/${Cypress.env('SELLERid')}`,
+    })
       .its('status')
       .should('eq', 200);
   });

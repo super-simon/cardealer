@@ -26,10 +26,22 @@ export class AdvertRepository extends Repository<AdvertEntity> {
     return await qb.getCount();
   }
 
-  public async getByUser(userId: string): Promise<AdvertEntity[]> {
+  public async getListByUser(userId: string): Promise<AdvertEntity[]> {
     const qb = this.getMyBaseQueryBuilder(userId);
     qb.leftJoinAndSelect('advert.model', 'model');
     qb.leftJoinAndSelect('model.brand', 'brand');
+
+    return await qb.getMany();
+  }
+
+  public async getList(): Promise<AdvertEntity[]> {
+    const qb = this.createQueryBuilder('advert');
+    qb.andWhere('advert.status != :deletedStatus', {
+      deletedStatus: AdvertStatusEnum.DELETED,
+    });
+    qb.leftJoinAndSelect('advert.model', 'model');
+    qb.leftJoinAndSelect('model.brand', 'brand');
+    qb.leftJoinAndSelect('advert.user', 'user');
 
     return await qb.getMany();
   }

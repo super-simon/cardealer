@@ -20,7 +20,7 @@ import { CurrentUser } from '../auth/decorators/current-user.decorator';
 import { Roles } from '../auth/decorators/roles.decorator';
 import { RolesGuard } from '../auth/guards/roles.guard';
 import { IUserData } from '../auth/interfaces/user-data.interface';
-import { AdvertMapper } from './advert.mapper';
+import { AdvertMyMapper } from './advert.my.mapper';
 import { AdvertService } from './advert.service';
 import { CreateMyAdvertReqDto } from './dto/req/create-my-advert.req.dto';
 import { UpdateMyAdvertReqDto } from './dto/req/update-my-advert.req.dto';
@@ -51,9 +51,7 @@ export class AdvertMyController {
     @CurrentUser() userData: IUserData,
   ): Promise<AdvertMyListItemResDto[]> {
     const adverts = await this.advertService.getMyList(userData);
-    console.log(adverts);
-    const res = AdvertMapper.toResponseListDTO(adverts);
-    console.log(res);
+    const res = AdvertMyMapper.toResponseListDTO(adverts);
     return res;
   }
 
@@ -85,7 +83,6 @@ export class AdvertMyController {
     @Param('advertId') advertId: string,
     @CurrentUser() userData: IUserData,
   ): Promise<void> {
-    console.log(advertId, userData.userId);
     return await this.advertService.removeMy(userData, advertId);
   }
 }

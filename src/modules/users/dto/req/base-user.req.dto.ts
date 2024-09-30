@@ -2,6 +2,7 @@ import { ApiProperty } from '@nestjs/swagger';
 import { Transform, Type } from 'class-transformer';
 import { IsEnum, IsOptional, IsString, Length, Matches } from 'class-validator';
 
+import { AccountTypeEnum } from 'src/database/entities/enums/account-type.enum';
 import { RoleEnum } from 'src/database/entities/enums/role.enum';
 import { TransformHelper } from '../../../../common/helpers/transform.helper';
 
@@ -39,4 +40,9 @@ export class BaseUserReqDto {
   @IsString()
   @IsEnum(RoleEnum)
   role: RoleEnum;
+
+  @ApiProperty({ example: 'BASE' })
+  @IsString()
+  @IsEnum(AccountTypeEnum)
+  type?: AccountTypeEnum;
 }
